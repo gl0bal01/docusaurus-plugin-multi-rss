@@ -1,0 +1,56 @@
+{
+  "name": "docusaurus-plugin-multi-rss",
+  "version": "1.0.0",
+  "description": "A powerful Docusaurus plugin for aggregating and displaying multiple RSS feeds with category filtering, batch processing, and TypeScript support",
+  "main": "src/index.ts",
+  "types": "src/types.ts",
+  "keywords": [
+    "docusaurus",
+    "docusaurus-plugin",
+    "rss",
+    "rss-feed",
+    "rss-aggregator",
+    "news-aggregator",
+    "feed-reader",
+    "multi-rss",
+    "typescript",
+    "documentation"
+  ],
+  "author": "gl0bal01",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gl0bal01/docusaurus-plugin-multi-rss.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gl0bal01/docusaurus-plugin-multi-rss/issues"
+  },
+  "homepage": "https://github.com/gl0bal01/docusaurus-plugin-multi-rss#readme",
+  "peerDependencies": {
+    "@docusaurus/core": "^3.0.0",
+    "@docusaurus/types": "^3.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "dependencies": {
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "@docusaurus/core": "3.8.1",
+    "@docusaurus/types": "3.8.1",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  }
+}
