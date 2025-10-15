@@ -1,5 +1,12 @@
 # docusaurus-plugin-multi-rss
 
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+[![Docusaurus](https://img.shields.io/badge/Docusaurus-3.0+-green.svg)](https://docusaurus.io/)
+[![GitHub](https://img.shields.io/badge/GitHub-gl0bal01-181717?logo=github&logoColor=white)](https://github.com/gl0bal01)
+
+
 A powerful Docusaurus plugin for aggregating and displaying multiple RSS feeds with category filtering, batch processing, and full TypeScript support.
 
 ## Features
@@ -384,11 +391,9 @@ Contributions are welcome! Please:
 
 MIT License - see [LICENSE](./LICENSE) file for details
 
-## Author
+## Demo
 
-**gl0bal01**
-- GitHub: [@gl0bal01](https://github.com/gl0bal01)
-- Website: [gl0bal01.com](https://gl0bal01.com)
+- The plugin can be seen in operation on the website: [gl0bal01.com](https://gl0bal01.com)
 
 ## Acknowledgments
 
@@ -403,4 +408,4 @@ MIT License - see [LICENSE](./LICENSE) file for details
 
 ---
 
-**Star this repo** if you find it useful!
+**⭐ Star this repo** if you find it helpful.
