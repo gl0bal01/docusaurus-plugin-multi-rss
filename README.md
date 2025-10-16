@@ -393,7 +393,7 @@ MIT License - see [LICENSE](./LICENSE) file for details
 
 ## Demo
 
-- The plugin can be seen in operation on the website: [gl0bal01.com](https://gl0bal01.com)
+- The plugin can be seen in operation on the website: [gl0bal01.com](https://gl0bal01.com/news)
 
 ## Acknowledgments
 
