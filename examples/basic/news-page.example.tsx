@@ -49,13 +49,19 @@ export default function NewsPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filter items based on category and search
-  const filteredItems = rssData.allItems.filter(item => {
-    const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
-    const matchesSearch = !searchQuery ||
-      item.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.summary?.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  // Sanitize URLs to prevent XSS when filtering based on user input
+  const filteredItems = rssData.allItems
+    .filter(item => {
+      const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
+      const matchesSearch = !searchQuery ||
+        item.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.summary?.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    })
+    .map(item => ({
+      ...item,
+      link: sanitizeUrl(item.link)
+    }));
 
   const categories = ['all', ...Object.keys(rssData.categories)];
 
@@ -152,9 +158,10 @@ export default function NewsPage() {
               }}
             >
               <h2 style={{ marginTop: 0 }}>
-                {item.link ? (
+                {item.link && item.link !== '#' ? (
                   <a
-                    href={sanitizeUrl(item.link)}
+                    // URL is sanitized on line 63 before rendering to prevent XSS
+                    href={item.link}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ textDecoration: 'none', color: '#007bff' }}
