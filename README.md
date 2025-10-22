@@ -113,7 +113,15 @@ function MyRSSPage() {
       <h1>Latest News</h1>
       {rssData.allItems.slice(0, 10).map((item) => (
         <article key={item.guid}>
-          <h2><a href={item.link}>{item.title}</a></h2>
+          <h2>
+            {item.link ? (
+              <a href={item.link} target="_blank" rel="noopener noreferrer">
+                {item.title}
+              </a>
+            ) : (
+              item.title
+            )}
+          </h2>
           <p>{item.summary}</p>
           <small>
             {item.feedTitle} • {new Date(item.publishedDate).toLocaleDateString()}
@@ -329,7 +337,7 @@ This plugin includes built-in security measures to protect against XSS attacks f
 
 ### URL Sanitization
 
-All URLs from RSS feeds (item links, feed links, and enclosure URLs) are automatically sanitized to prevent XSS attacks. The sanitization:
+All URLs from RSS feeds (item links, feed links, and enclosure URLs) are automatically sanitized **at build time** to prevent XSS attacks. The sanitization:
 
 - **Blocks dangerous protocols**: `javascript:`, `data:`, `vbscript:`, `file:`, `about:`
 - **Allows safe protocols**: `http:`, `https:`, `mailto:`, `ftp:`
@@ -346,6 +354,10 @@ Blocked URLs are set to `undefined`, so always check if a link exists before ren
   <span>{item.title}</span>
 )}
 ```
+
+#### Additional Client-Side Protection (Recommended)
+
+For defense-in-depth, consider adding client-side URL sanitization as well. See the [example file](./examples/basic/news-page.example.tsx) for a complete implementation with both backend and frontend sanitization.
 
 ### Security Best Practices
 

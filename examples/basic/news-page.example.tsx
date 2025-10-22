@@ -12,6 +12,38 @@ import type { RSSData, RSSItem } from 'docusaurus-plugin-multi-rss';
 // Import the generated RSS data
 const rssData: RSSData = require('@site/.docusaurus/docusaurus-plugin-multi-rss/default/rss-data.json');
 
+/**
+ * Sanitize URLs to prevent XSS attacks on the client side
+ * Only allows http, https, mailto, and ftp protocols
+ * Returns '#' for invalid/dangerous URLs
+ */
+const sanitizeUrl = (url: string | undefined): string => {
+  if (!url) return '#';
+
+  const trimmedUrl = url.trim();
+  if (!trimmedUrl) return '#';
+
+  // Check for dangerous protocols
+  const dangerousProtocols = /^(\s)*(javascript|data|vbscript|file|about):/i;
+  if (dangerousProtocols.test(trimmedUrl)) {
+    console.warn(`[Multi-RSS] Blocked potentially dangerous URL: ${trimmedUrl.substring(0, 50)}...`);
+    return '#';
+  }
+
+  // Only allow safe protocols
+  const safeProtocols = /^(https?|mailto|ftp):/i;
+
+  // If it has a protocol, check if it's safe
+  if (trimmedUrl.includes(':')) {
+    if (!safeProtocols.test(trimmedUrl)) {
+      console.warn(`[Multi-RSS] Blocked URL with unsafe protocol: ${trimmedUrl.substring(0, 50)}...`);
+      return '#';
+    }
+  }
+
+  return trimmedUrl;
+};
+
 export default function NewsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -122,7 +154,7 @@ export default function NewsPage() {
               <h2 style={{ marginTop: 0 }}>
                 {item.link ? (
                   <a
-                    href={item.link}
+                    href={sanitizeUrl(item.link)}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ textDecoration: 'none', color: '#007bff' }}
