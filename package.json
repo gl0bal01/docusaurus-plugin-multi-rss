@@ -20,7 +20,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gl0bal01/docusaurus-plugin-multi-rss.git"
+    "url": "git+https://github.com/gl0bal01/docusaurus-plugin-multi-rss.git"
   },
   "bugs": {
     "url": "https://github.com/gl0bal01/docusaurus-plugin-multi-rss/issues"

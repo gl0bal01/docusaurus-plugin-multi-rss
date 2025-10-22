@@ -120,14 +120,18 @@ export default function NewsPage() {
               }}
             >
               <h2 style={{ marginTop: 0 }}>
-                <a
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ textDecoration: 'none', color: '#007bff' }}
-                >
-                  {item.title}
-                </a>
+                {item.link ? (
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: 'none', color: '#007bff' }}
+                  >
+                    {item.title}
+                  </a>
+                ) : (
+                  <span>{item.title}</span>
+                )}
               </h2>
 
               <p style={{ color: '#666' }}>{item.summary}</p>

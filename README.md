@@ -19,6 +19,7 @@ A powerful Docusaurus plugin for aggregating and displaying multiple RSS feeds w
 - **Error Handling**: Graceful failure handling with detailed error reporting
 - **Customizable**: Flexible configuration options for timeouts, concurrency, and item limits
 - **Statistics**: Built-in feed statistics and health monitoring
+- **Security**: Built-in URL sanitization to prevent XSS attacks from malicious RSS feeds
 
 ## Installation
 
@@ -321,6 +322,37 @@ See [docs/client-side-fetching.md](./docs/client-side-fetching.md) for more deta
 Deploy a serverless function (Vercel/Netlify/Cloudflare) for real-time updates.
 
 See [docs/server-side-api.md](./docs/server-side-api.md) for implementation guide.
+
+## Security
+
+This plugin includes built-in security measures to protect against XSS attacks from malicious RSS feeds:
+
+### URL Sanitization
+
+All URLs from RSS feeds (item links, feed links, and enclosure URLs) are automatically sanitized to prevent XSS attacks. The sanitization:
+
+- **Blocks dangerous protocols**: `javascript:`, `data:`, `vbscript:`, `file:`, `about:`
+- **Allows safe protocols**: `http:`, `https:`, `mailto:`, `ftp:`
+- **Logs warnings**: When dangerous URLs are detected and blocked
+
+Blocked URLs are set to `undefined`, so always check if a link exists before rendering:
+
+```tsx
+{item.link ? (
+  <a href={item.link} target="_blank" rel="noopener noreferrer">
+    {item.title}
+  </a>
+) : (
+  <span>{item.title}</span>
+)}
+```
+
+### Security Best Practices
+
+1. **Always use `rel="noopener noreferrer"`** when rendering external links with `target="_blank"`
+2. **Validate link existence** before rendering anchor tags
+3. **Monitor console logs** for warnings about blocked URLs
+4. **Review feed sources** regularly to ensure they're trustworthy
 
 ## Best Practices
 
