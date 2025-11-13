@@ -286,23 +286,74 @@ name: Update RSS Feeds
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Every 6 hours
-  workflow_dispatch:  # Manual trigger
+    - cron: '0 7 * * *' 
+
+  # Allow manual triggering from Actions tab
+  workflow_dispatch:
+
+  # Also run on push to main (for immediate updates after config changes)
+  push:
+    branches:
+      - main
+    paths:
+      - 'rss-feeds.config.ts'
+      - 'docusaurus.config.ts'
+      - '.github/workflows/update-rss-feeds.yml'
 
 jobs:
   update-and-deploy:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          node-version: '18'
-      - run: npm ci
-      - run: npm run build
-      - uses: peaceiris/actions-gh-pages@v3
+          fetch-depth: 0  # Full history for git operations
+
+      - name: Checkout Intel Codex Vault
+        uses: actions/checkout@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          repository: gl0bal01/intel-codex
+          path: .temp-vault
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site (fetches fresh RSS feeds)
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "RSS feed update failed at $(date)"
+          # Optional: Add notification service here (Discord webhook, email, etc.)
 ```
 
 **Pros**: Simple, works with GitHub Pages, no backend needed
